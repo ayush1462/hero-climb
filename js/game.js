@@ -117,7 +117,7 @@ class MainGameScene extends Phaser.Scene {
       loop: true,
     });
     spawnCoinEvent = this.time.addEvent({
-      delay: 2000, // Spawn every 2 seconds
+      delay: 1000, // Spawn every 1 seconds
       callback: spawnCoin,
       callbackScope: this,
       loop: true,
@@ -126,7 +126,7 @@ class MainGameScene extends Phaser.Scene {
     this.physics.add.collider(player, bombs, hitBomb, null, this);
     this.physics.add.overlap(player, coins, collectCoin, null, this);
     let incSpeed = this.time.addEvent({
-      delay: 10000, // Spawn every 1.5 seconds
+      delay: 10000,
       callback: () => {
         velocity += 50;
       },

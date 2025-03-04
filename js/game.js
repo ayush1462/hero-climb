@@ -124,7 +124,7 @@ function jump(scene) {
   console.log("player is jumping")
   const startX = side === "left" ? 130 : 950;
   const endX = side === "left" ? 950 : 130;
-  const peakY = player.y - 250;
+  const peakY = player.y - 150;
   scene.tweens.add({
     targets: player,
     x: endX,
@@ -137,7 +137,7 @@ function jump(scene) {
   scene.tweens.add({
     targets: player,
     y: peakY,
-    duration: 200,
+    duration: 250,
     ease: "Cubic.easeOut",
     yoyo: true,
     onStart: () => {

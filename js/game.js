@@ -28,7 +28,8 @@ let coin;
 let bombSpeed = 1000;
 let score = 0;
 let side = "left";
-let isJumping = false;
+let isJumping;
+let spawnBombEvent;
 function preload() {
   this.load.image("background", "assets/img/background.png");
   this.load.spritesheet("player", "assets/img/dude.png", {
@@ -84,11 +85,11 @@ function create() {
     frames: [{ key: "player", frame: 4 }],
     frameRate: 20,
   });
-
+  isJumping = false;
   this.input.on("pointerdown", ()=> jump(this));
   bombs = this.physics.add.group();
 
-  this.time.addEvent({
+  spawnBombEvent = this.time.addEvent({
     delay: 1500, // Spawn every 1.5 seconds
     callback: spawnBomb,
     callbackScope: this,
@@ -111,11 +112,27 @@ function spawnBomb() {
   let bomb = bombs.create(xPos, -50, "bomb"); // Spawn above screen
   bomb.setScale(4);
   bomb.setVelocityY(bombSpeed); // Make bomb fall down
-  bomb.setGravityY(200); // Apply gravity
+  bomb.setGravityY(0); // Apply gravity
 }
 function hitBomb(player, bomb) {
-  this.physics.pause(true);
+  bombs.setVelocityY(0);
   player.setTint(0xff0000);
+  if (side === "left") {
+    player.setVelocityX(200);
+    side = "right"
+  }
+  else {
+    player.setVelocityX(-200)
+  }
+  player.setVelocityY(800);
+  spawnBombEvent.remove();
+  let restartButton = this.add.text(350, 960, "RESTART", {
+    fontSize: '82px',
+    fill: '#fff',
+    backgroundColor: '#ff0000'
+  }).setInteractive().on('pointerdown', () => {
+    this.scene.restart();
+  });
 }
 function jump(scene) {
   console.log("jump");

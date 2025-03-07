@@ -117,9 +117,9 @@ function spawnBomb() {
 function hitBomb(player, bomb) {
   bombs.setVelocityY(0);
   player.setTint(0xff0000);
-  if (side === "left") {
+  if (player.x < 540) {
     player.setVelocityX(200);
-    side = "right"
+  
   }
   else {
     player.setVelocityX(-200)

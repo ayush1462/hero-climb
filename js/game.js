@@ -27,7 +27,7 @@ let bombs;
 let coin;
 let bombSpeed = 1000;
 let score = 0;
-let side = "left";
+let side;
 let isJumping;
 let spawnBombEvent;
 function preload() {
@@ -42,6 +42,7 @@ function preload() {
 }
 
 function create() {
+  side = "left"
   this.add.image(540, 960, "background");
   player = this.physics.add.sprite(135, 1620, "player");
   player.setGravityX(0);

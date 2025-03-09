@@ -1,8 +1,8 @@
 // configuration of game scene
 var config = {
   type: Phaser.AUTO,
-  width: 1080, // perfect width for mobile game
-  height: 1920, // perfect height for mobile game
+  width: 378, // perfect width for mobile game
+  height: 672, // perfect height for mobile game
   physics: {
     default: "arcade",
     arcade: {
@@ -25,35 +25,53 @@ let wall;
 let player;
 let bombs;
 let coin;
-let bombSpeed = 1000;
-let score = 0;
+let bombSpeed;
+let score;
+let scoreText;
+let addScore;
 let side;
 let isJumping;
 let spawnBombEvent;
 function preload() {
   this.load.image("background", "assets/img/background.png");
-  this.load.spritesheet("player", "assets/img/dude.png", {
-    frameWidth: 32,
-    frameHeight: 48,
-  });
+  for (let i = 1; i <= 9; i++) {
+    this.load.image(`ninja${i}`, `../assets/hero/ninja${i}.png`);
+  }
   this.load.image("wall", "assets/img/wall.png");
-  this.load.image("bomb", "assets/img/bomb.png");
+  this.load.image("bomb", "assets/img/edge.png");
   this.load.image("star", "assets/img/star.png");
 }
 
 function create() {
-  side = "left"
-  this.add.image(540, 960, "background");
-  player = this.physics.add.sprite(135, 1620, "player");
+  this.physics.world.createDebugGraphic();
+  side = "left";
+  bombSpeed = 300;
+  this.add.image(189, 336, "background");
+  score = 0;
+  addScore = this.time.addEvent({
+    delay: 1000,
+    callback: () => {
+      score += 1;
+      scoreText.setText(score);
+    },
+    callbackScope: this,
+    loop: true,
+  });
+  scoreText = this.add.text(280, 50, score, {
+    fontSize: "30px",
+  });
+  player = this.physics.add.sprite(120, 550, "ninja1");
+  player.setOrigin(0);
   player.setGravityX(0);
-  player.setScale(3.5);
+  player.setScale(0.2);
   player.angle = 90;
-  player.body.setSize(50, 30);
-  player.body.setOffset(-10, 10);
-
+  player.setFlipX(true);
+  player.setSize(500, 300);
+  player.setOffset(-500, -20);
+  console.log(player.x);
   const wallWidth = 32;
   const wallHeight = 400;
-  const sceneHeight = 1920;
+  const sceneHeight = 672;
   wall = this.physics.add.staticGroup();
   // Loop to stack walls vertically
   for (let y = 0; y < sceneHeight; y += wallHeight) {
@@ -67,7 +85,7 @@ function create() {
 
     // Right wall
     wall
-      .create(1080, y, "wall")
+      .create(378, y, "wall")
       .setOrigin(0, 0)
       .setAngle(90)
       .setSize(32, 400)
@@ -75,19 +93,24 @@ function create() {
   }
   this.physics.add.collider(player, wall);
   this.anims.create({
-    key: "left",
-    frames: this.anims.generateFrameNumbers("player", { start: 0, end: 3 }),
-    frameRate: 10,
+    key: "run",
+    frames: [
+      { key: "ninja1" },
+      { key: "ninja2" },
+      { key: "ninja3" },
+      { key: "ninja4" },
+      { key: "ninja5" },
+      { key: "ninja6" },
+      { key: "ninja7" },
+      { key: "ninja8" },
+      { key: "ninja9" },
+    ],
+    frameRate: 20,
     repeat: -1,
   });
-  player.anims.play("left");
-  this.anims.create({
-    key: "turn",
-    frames: [{ key: "player", frame: 4 }],
-    frameRate: 20,
-  });
+  player.anims.play("run", true);
   isJumping = false;
-  this.input.on("pointerdown", ()=> jump(this));
+  this.input.on("pointerdown", () => jump(this));
   bombs = this.physics.add.group();
 
   spawnBombEvent = this.time.addEvent({
@@ -100,7 +123,7 @@ function create() {
   this.time.addEvent({
     delay: 10000, // Spawn every 1.5 seconds
     callback: () => {
-      bombSpeed +=50;
+      bombSpeed += 50;
     },
     callbackScope: this,
     loop: true,
@@ -108,10 +131,12 @@ function create() {
 }
 function spawnBomb() {
   let side = Phaser.Math.Between(0, 1); // 0 = Left wall, 1 = Right wall
-  let xPos = side === 0 ? 100 : 980; // Near left wall (100) or right wall (980)
-
+  let xPos = side === 0 ? 66 : 312; // Near left wall (100) or right wall (980)
   let bomb = bombs.create(xPos, -50, "bomb"); // Spawn above screen
-  bomb.setScale(4);
+  if (side === 1) {
+    bomb.setFlipX(true);
+  }
+  bomb.setScale(1);
   bomb.setVelocityY(bombSpeed); // Make bomb fall down
   bomb.setGravityY(0); // Apply gravity
 }
@@ -120,29 +145,38 @@ function hitBomb(player, bomb) {
   player.setTint(0xff0000);
   if (player.x < 540) {
     player.setVelocityX(200);
-  
-  }
-  else {
-    player.setVelocityX(-200)
+  } else {
+    player.setVelocityX(-200);
   }
   player.setVelocityY(800);
   spawnBombEvent.remove();
-  let restartButton = this.add.text(350, 960, "RESTART", {
-    fontSize: '82px',
-    fill: '#fff',
-    backgroundColor: '#ff0000'
-  }).setInteractive().on('pointerdown', () => {
-    this.scene.restart();
-  });
+  addScore.remove();
+  let restartButton = this.add
+    .text(110, 300, "RESTART", {
+      fontSize: "32px",
+      fill: "#fff",
+      backgroundColor: "#ff0000",
+      padding: { x: 10, y: 5 },
+    })
+    .setInteractive()
+    .on("pointerdown", () => {
+      this.scene.restart();
+    });
+  restartButton.setShadow(5, 5, "#000", 10, true, true);
 }
 function jump(scene) {
-  console.log("jump");
+  let isOnRightWall = player.x < 189;
+  if (isOnRightWall) {
+    player.setOffset(-20, -350);
+  } else {
+    player.setOffset(-500, -20);
+  }
   if (isJumping) return;
   isJumping = true;
-  console.log("player is jumping")
-  const startX = side === "left" ? 130 : 950;
-  const endX = side === "left" ? 950 : 130;
-  const peakY = player.y - 150;
+  console.log("player is jumping");
+  const startX = side === "left" ? 120 : 258;
+  const endX = side === "left" ? 258 : 120;
+  const peakY = player.y - 50;
   scene.tweens.add({
     targets: player,
     x: endX,
@@ -164,7 +198,7 @@ function jump(scene) {
     onComplete: () => {
       isJumping = false;
       side = side === "left" ? "right" : "left";
-    }
+    },
   });
 }
 function update() {}

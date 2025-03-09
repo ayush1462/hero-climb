@@ -3,10 +3,17 @@
   "short_name": "Climber",
   "start_url": "/index.html",
   "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00FF00",
   "icons": [
     {
-      "src": "/assets/img/NINJA.png",
+      "src": "/assets/img/NINJA1.png",
       "sizes": "500x500",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/img/NINJA2.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]

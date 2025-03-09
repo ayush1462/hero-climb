@@ -33,7 +33,7 @@ let side;
 let isJumping;
 let spawnBombEvent;
 function preload() {
-  this.load.image("background", "assets/img/background.png");
+  this.load.image("background", "assets/img/bg.png");
   for (let i = 1; i <= 9; i++) {
     this.load.image(`ninja${i}`, `../assets/hero/ninja${i}.png`);
   }

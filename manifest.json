@@ -1,0 +1,13 @@
+{
+  "name": "Wall Climber Game",
+  "short_name": "Climber",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/assets/img/NINJA.png",
+      "sizes": "500x500",
+      "type": "image/png"
+    }
+  ]
+}

@@ -12,10 +12,18 @@
             margin: 0;
         }
     </style>
+    <link rel="manifest" href="manifest.json">
 </head>
 
 <body>
     <script src="/js/game.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log("Service Worker Registered"));
+        }
+    </script>
+
 </body>
 
 </html>

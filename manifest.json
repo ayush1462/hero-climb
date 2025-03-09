@@ -1,20 +1,34 @@
 {
   "name": "Wall Climber Game",
   "short_name": "Climber",
+  "description": "A fun challenging wall-climbing game where you avoid obstaclesand collect coins",
+  "id": "/",
   "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#00FF00",
+  "orientation": "portrait",
+  "launch_handler": {
+      "client_mode": "navigate-existing"
+  },
   "icons": [
     {
       "src": "/assets/img/NINJA1.png",
       "sizes": "500x500",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "/assets/img/NINJA2.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
-  ]
+  ],
+  "screenshots": [{
+      "src": "/assets/screenshot1.png",
+      "sizes": "1080x1920",
+      "type": "image/png"
+  }]
 }

@@ -43,7 +43,6 @@ function preload() {
 }
 
 function create() {
-  this.physics.world.createDebugGraphic();
   side = "left";
   bombSpeed = 300;
   this.add.image(189, 336, "background");

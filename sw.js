@@ -24,9 +24,10 @@ self.addEventListener('install', (event) => {
 self.addEventListener('activate', (event) => {
     console.log('[SW] Service Worker Activated');
 });
-self.addEventListener('fetch', (event) => {
-    console.log(`[SW] Fetching: ${event.request.url}`)
-    event.respondWith(caches.match(event.request).then((response) => {
-        return response || fetch(event.request);
-    }));
-});
+self.addEventListener("fetch", (event) => {
+        event.respondWith(
+                caches.match(event.request).then((cachedResponse) => {
+                            return cachedResponse || fetch(event.request);
+                                    })
+                                        );
+                                        });

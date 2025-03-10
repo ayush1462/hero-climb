@@ -19,7 +19,7 @@
     <script src="/js/game.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sw.js')
+            navigator.serviceWorker.register('/service-worker.js')
                 .then(() => console.log("Service Worker Registered"));
         }
     </script>

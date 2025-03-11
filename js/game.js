@@ -59,7 +59,7 @@ function create() {
   scoreText = this.add.text(280, 50, score, {
     fontSize: "30px",
   });
-  player = this.physics.add.sprite(300, 500, "ninja1");
+  player = this.physics.add.sprite(120, 500, "ninja1");
   player.setOrigin(0);
   player.setGravityX(0);
   player.setScale(0.2);

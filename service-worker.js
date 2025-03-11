@@ -4,6 +4,7 @@ self.addEventListener("install", (event) => {
       console.log("[SW] caching game files ....");
       return cache.addAll([
         "/",
+        "/phaser.min.js",
         "/index.html",
         "/js/game.js",
         "/manifest.json",

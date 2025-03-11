@@ -1,30 +1,33 @@
-self.addEventListener('install', (event) => {
-    event.waitUntil(caches.open('game-cache').then((cache) => {
-        console.log('[SW] caching game files ....');
-        return cache.addAll([
-            "/",
-            "/index.html",
-            "/js/game.js",
-            "/manifest.json",
-            "/assets/img/bg.png",
-            "/assets/img/edge.png",
-            "/assets/img/wall.png",
-            "/assets/hero/ninja1.png",
-            "/assets/hero/ninja2.png",
-            "/assets/hero/ninja3.png",
-            "/assets/hero/ninja4.png",
-            "/assets/hero/ninja5.png",
-            "/assets/hero/ninja6.png",
-            "/assets/hero/ninja7.png",
-            "/assets/hero/ninja8.png",
-            "/assets/hero/ninja9.png",
-        ]);
-    }));
-    self.skipWaiting();
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open("game-cache").then((cache) => {
+      console.log("[SW] caching game files ....");
+      return cache.addAll([
+        "/",
+        "/index.html",
+        "/js/game.js",
+        "/manifest.json",
+        "/assets/img/bg.png",
+        "/assets/img/edge.png",
+        "/assets/img/wall.png",
+        "/assets/hero/ninja1.png",
+        "/assets/hero/ninja2.png",
+        "/assets/hero/ninja3.png",
+        "/assets/hero/ninja4.png",
+        "/assets/hero/ninja5.png",
+        "/assets/hero/ninja6.png",
+        "/assets/hero/ninja7.png",
+        "/assets/hero/ninja8.png",
+        "/assets/hero/ninja9.png",
+        "/assets/img/NINJA1.png",
+      ]);
+    })
+  );
+  self.skipWaiting();
 });
-self.addEventListener('activate', (event) => {
-    console.log('[SW] Service Worker Activated');
-    event.waitUntil(self.clients.claim());
+self.addEventListener("activate", (event) => {
+  console.log("[SW] Service Worker Activated");
+  event.waitUntil(self.clients.claim());
 });
 self.addEventListener("fetch", (event) => {
   console.log("[SW] Fetching:", event.request.url);
@@ -39,13 +42,3 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
-<<<<<<< HEAD:service-worker.js
-=======
-self.addEventListener("fetch", (event) => {
-        event.respondWith(
-                caches.match(event.request).then((cachedResponse) => {
-                            return cachedResponse || fetch(event.request);
-                                    })
-                                        );
-                                        });
->>>>>>> 6e9c8192b6b9eb1806b28f6dd27b81c65b4fa067:sw.js

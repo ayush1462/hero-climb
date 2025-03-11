@@ -39,3 +39,13 @@ self.addEventListener("fetch", (event) => {
     })
   );
 });
+<<<<<<< HEAD:service-worker.js
+=======
+self.addEventListener("fetch", (event) => {
+        event.respondWith(
+                caches.match(event.request).then((cachedResponse) => {
+                            return cachedResponse || fetch(event.request);
+                                    })
+                                        );
+                                        });
+>>>>>>> 6e9c8192b6b9eb1806b28f6dd27b81c65b4fa067:sw.js

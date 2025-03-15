@@ -59,14 +59,14 @@ function create() {
   scoreText = this.add.text(280, 50, score, {
     fontSize: "30px",
   });
-  player = this.physics.add.sprite(120, 500, "ninja1");
-  player.setOrigin(0);
+  player = this.physics.add.sprite(75, 500, "ninja1");
+  player.setOrigin(0.5);
   player.setGravityX(0);
   player.setScale(0.2);
   player.angle = 90;
   player.setFlipX(true);
   player.setSize(500, 300);
-  player.setOffset(-500, -20);
+  player.setOffset(-100, 50);
   console.log(player.x);
   const wallWidth = 32;
   const wallHeight = 400;
@@ -164,17 +164,10 @@ function hitBomb(player, bomb) {
   restartButton.setShadow(5, 5, "#000", 10, true, true);
 }
 function jump(scene) {
-  let isOnRightWall = player.x < 189;
-  if (isOnRightWall) {
-    player.setOffset(-20, -350);
-  } else {
-    player.setOffset(-500, -20);
-  }
   if (isJumping) return;
   isJumping = true;
   console.log("player is jumping");
-  const startX = side === "left" ? 120 : 258;
-  const endX = side === "left" ? 258 : 120;
+  const endX = side === "left" ? 305 : 75;
   const peakY = player.y - 50;
   scene.tweens.add({
     targets: player,

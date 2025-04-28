@@ -73,13 +73,13 @@ class MainGameScene extends Phaser.Scene {
     coins = this.physics.add.group();
 
     spawnBombEvent = this.time.addEvent({
-      delay: 2500, // Spawn every 1.5 seconds
+      delay: 2500, // Spawn every 2.5 seconds
       callback: spawnBomb,
       callbackScope: this,
       loop: true,
     });
     spawnCoinEvent = this.time.addEvent({
-      delay: 1500, // Spawn every 1.5 seconds
+      delay: 2000, // Spawn every 2 seconds
       callback: spawnCoin,
       callbackScope: this,
       loop: true,
@@ -133,6 +133,7 @@ class MainGameScene extends Phaser.Scene {
         .text(110, 300, "RESTART", {
           fontSize: "32px",
           fill: "#fff",
+          align: 1,
           backgroundColor: "#ff0000",
           padding: { x: 10, y: 5 },
         })
@@ -151,6 +152,7 @@ class MainGameScene extends Phaser.Scene {
     scoreText = this.add.text(66, 16, "score: 0", {
       fontSize: "32px",
       fill: "#000",
+      align: "center",
     });
     scoreText.setText(score);
     function jump(scene) {

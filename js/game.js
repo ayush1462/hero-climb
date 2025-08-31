@@ -25,6 +25,7 @@ class MainGameScene extends Phaser.Scene {
     this.load.image("wall", "assets/img/wickedstone13z.jpg");
     this.load.image("bomb", "assets/img/edge.png");
     this.load.image("coin", "assets/img/star.png");
+    this.load.image("board", "assets/img/scoreBoard.png");
   }
 
   create() {
@@ -129,19 +130,19 @@ class MainGameScene extends Phaser.Scene {
       player.setVelocityY(400);
       spawnBombEvent.remove();
       spawnCoinEvent.remove();
+      this.add.image(190, 320, "board");
       let restartButton = this.add
         .text(110, 300, "RESTART", {
           fontSize: "32px",
-          fill: "#fff",
+          fill: "#000",
           align: 1,
-          backgroundColor: "#ff0000",
+          fontStyle: "bold",
           padding: { x: 10, y: 5 },
         })
         .setInteractive()
         .on("pointerdown", () => {
           this.scene.restart();
         });
-      restartButton.setShadow(5, 5, "#000", 10, true, true);
     }
     function collectCoin(player, coin) {
       coin.disableBody(true, true);
@@ -149,10 +150,11 @@ class MainGameScene extends Phaser.Scene {
       console.log(score);
       scoreText.setText(score);
     }
-    scoreText = this.add.text(66, 16, "score: 0", {
+    this.add.image(190, 30, "board").setScale(0.7);
+    scoreText = this.add.text(180, 14, "score: 0", {
       fontSize: "32px",
       fill: "#000",
-      align: "center",
+      align: "Right",
     });
     scoreText.setText(score);
     function jump(scene) {

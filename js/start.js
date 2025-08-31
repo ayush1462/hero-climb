@@ -4,21 +4,29 @@ class StartGameScene extends Phaser.Scene {
   }
   preload() {
     this.load.image("background", "assets/img/bg.png");
+    this.load.image("board", "assets/img/scoreBoard.png");
   }
   create() {
     this.add.image(189, 336, "background");
+    this.add.text(50, 200, "WALL RUNNER", {
+      fontFamily: "Comic Sans MS",
+      fontSize: "36px",
+      fontStyle: "bold", // <-- THIS sets the font weight
+      color: "#ffffff",
+    });
+    this.add.image(190, 320, "board")
     let startButton = this.add
       .text(130, 300, "START", {
         fontSize: "32px",
-        fill: "#fff",
-        backgroundColor: "#ff0000",
+        fill: "#cc6600",
+        fontStyle: "bold",
         padding: { x: 10, y: 5 },
       })
       .setInteractive()
       .on("pointerdown", () => {
         this.scene.start("MainGameScene");
       });
-    startButton.setShadow(5, 5, "#000", 10, true, true);
+    
   }
 }
 export default StartGameScene;

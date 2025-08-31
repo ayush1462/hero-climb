@@ -13,6 +13,7 @@ self.addEventListener("install", (event) => {
         "/assets/img/bg.png",
         "/assets/img/edge.png",
         "/assets/img/wall.png",
+        "/assets/img/star.png",
         "/assets/img/wickedstone13z.jpg",
         "/assets/hero/ninja1.png",
         "/assets/hero/ninja2.png",

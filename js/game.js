@@ -160,7 +160,7 @@ class MainGameScene extends Phaser.Scene {
         fontStyle: "bold",
         padding: { x: 10, y: 5 },
       });
-      if (score>highscore) {
+      if (score>highscore || highscore === null) {
        localStorage.setItem("highscore", score); 
       } 
     }

@@ -1,4 +1,4 @@
-let highscore = "High Score:" + localStorage.getItem("highscore")
+let highscore;
 class StartGameScene extends Phaser.Scene {
   constructor() {
     super({ key: "StartGameScene" });
@@ -8,6 +8,7 @@ class StartGameScene extends Phaser.Scene {
     this.load.image("board", "assets/img/scoreBoard.png");
   }
   create() {
+    highscore = "High Score:" + " " + localStorage.getItem("highscore");
     this.add.image(189, 336, "background");
     this.add.text(30, 50, highscore, {
       fontSize: "20px",

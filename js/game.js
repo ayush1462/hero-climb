@@ -5,11 +5,12 @@ let coins;
 let bombSpeed;
 let score;
 let scoreText;
-let addScore;
+let highscore = localStorage.getItem("highscore");
 let side;
 let isJumping;
 let spawnBombEvent;
 let spawnCoinEvent;
+let home;
 const WALL_WIDTH = 32;
 const WALL_HEIGHT = 32;
 const SCREEN_HEIGHT = 672;
@@ -18,11 +19,12 @@ class MainGameScene extends Phaser.Scene {
     super({ key: "MainGameScene" });
   }
   preload() {
-    this.load.image("background", "assets/img/bg.png");
+    this.load.image("background", "assets/img/background.png");
     for (let i = 1; i <= 9; i++) {
       this.load.image(`ninja${i}`, `../assets/hero/ninja${i}.png`);
     }
     this.load.image("wall", "assets/img/wickedstone13z.jpg");
+    this.load.image("home", "assets/img/home.svg");
     this.load.image("bomb", "assets/img/edge.png");
     this.load.image("coin", "assets/img/star.png");
     this.load.image("board", "assets/img/scoreBoard.png");
@@ -130,6 +132,14 @@ class MainGameScene extends Phaser.Scene {
       player.setVelocityY(400);
       spawnBombEvent.remove();
       spawnCoinEvent.remove();
+      home = this.add
+        .image(53, 33, "home")
+        .setInteractive()
+        .on("pointerdown", () => {
+          this.scene.start("StartGameScene");
+        });
+    
+      home.setScale(0.3);
       this.add.image(190, 320, "board");
       let restartButton = this.add
         .text(110, 300, "RESTART", {
@@ -143,6 +153,16 @@ class MainGameScene extends Phaser.Scene {
         .on("pointerdown", () => {
           this.scene.restart();
         });
+      this.add.text(150, 400, score, {
+        fontSize: "32px",
+        fill: "#000",
+        align: 1,
+        fontStyle: "bold",
+        padding: { x: 10, y: 5 },
+      });
+      if (score>highscore) {
+       localStorage.setItem("highscore", score); 
+      } 
     }
     function collectCoin(player, coin) {
       coin.disableBody(true, true);
@@ -150,8 +170,8 @@ class MainGameScene extends Phaser.Scene {
       console.log(score);
       scoreText.setText(score);
     }
-    this.add.image(190, 30, "board").setScale(0.7);
-    scoreText = this.add.text(180, 14, "score: 0", {
+    this.add.image(280, 30, "board").setScale(0.7);
+    scoreText = this.add.text(220, 14, "score: 0", {
       fontSize: "32px",
       fill: "#000",
       align: "Right",

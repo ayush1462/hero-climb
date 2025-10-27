@@ -1,14 +1,22 @@
+let highscore = "High Score:" + localStorage.getItem("highscore")
 class StartGameScene extends Phaser.Scene {
   constructor() {
     super({ key: "StartGameScene" });
   }
   preload() {
-    this.load.image("background", "assets/img/bg.png");
+    this.load.image("background", "assets/img/background.png");
     this.load.image("board", "assets/img/scoreBoard.png");
   }
   create() {
     this.add.image(189, 336, "background");
-    this.add.text(50, 200, "WALL RUNNER", {
+    this.add.text(30, 50, highscore, {
+      fontSize: "20px",
+      fill: "#000",
+      align: 1,
+      fontStyle: "bold",
+      padding: { x: 10, y: 5 },
+    });
+    this.add.text(60, 200, "WALL RUNNER", {
       fontFamily: "Comic Sans MS",
       fontSize: "36px",
       fontStyle: "bold", // <-- THIS sets the font weight

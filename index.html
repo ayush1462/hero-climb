@@ -20,36 +20,9 @@
     <script type="module" src="/js/index.js"></script>
     <script>
         if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/sw.js').then((reg) => {
-                    console.log('[Main] Service Worker registered.');
-
-                    // Detect when a new version of the SW is found
-                    reg.addEventListener('updatefound', () => {
-                        const newWorker = reg.installing;
-                        newWorker.addEventListener('statechange', () => {
-                            // When new SW activates AND there’s already an old one
-                            if (newWorker.state === 'activated' && navigator.serviceWorker.controller) {
-                                console.log('[Main] New version activated!');
-
-                                // Option 1: Show popup (recommended for games)
-                                if (confirm('A new version of the game is available! Reload now?')) {
-                                    window.location.reload();
-                                }
-
-                                // Option 2 (uncomment this to reload automatically)
-                                // window.location.reload();
-                            }
-                        });
-                    });
-                });
-
-                // Optional: listen for controllerchange to ensure reload
-                navigator.serviceWorker.addEventListener('controllerchange', () => {
-                    console.log('[Main] Controller changed -> reloading...');
-                    window.location.reload();
-                });
-            }
-
+            navigator.serviceWorker.register('/service-worker.js')
+                .then(() => console.log("Service Worker Registered"));
+        }
     </script>
 
 </body>

@@ -4,7 +4,7 @@ class StartGameScene extends Phaser.Scene {
     super({ key: "StartGameScene" });
   }
   preload() {
-    this.load.image("background", "assets/img/background.png");
+    this.load.image("background", "assets/img/7.png");
     this.load.image("board", "assets/img/scoreBoard.png");
   }
   create() {

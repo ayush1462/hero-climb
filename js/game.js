@@ -19,13 +19,16 @@ class MainGameScene extends Phaser.Scene {
     super({ key: "MainGameScene" });
   }
   preload() {
-    this.load.image("background", "assets/img/background.png");
+    this.load.image("background", "assets/img/7.png");
+    for (let i = 1; i <= 5; i++) {
+      this.load.image(`bg${i}`, `../assets/city/${i}.png`);
+    }
     for (let i = 1; i <= 9; i++) {
       this.load.image(`ninja${i}`, `../assets/hero/ninja${i}.png`);
     }
     this.load.image("wall", "assets/img/wickedstone13z.jpg");
     this.load.image("home", "assets/img/home.svg");
-    this.load.image("bomb", "assets/img/edge.png");
+    this.load.image("bomb", "assets/img/obs1.png");
     this.load.image("coin", "assets/img/star.png");
     this.load.image("board", "assets/img/scoreBoard.png");
   }
@@ -34,11 +37,17 @@ class MainGameScene extends Phaser.Scene {
     side = "left";
     bombSpeed = 300;
     this.wallMoving = true;
-    this.add.image(189, 336, "background");
+    // this.add.image(189, 336, "background");
+    this.add.image(189, 336, "bg1").setScrollFactor(0);
+    this.add.image(189, 336, "bg2").setScrollFactor(0.03);
+    this.add.image(189, 336, "bg3").setScrollFactor(0.07);
+    this.add.image(189, 336, "bg4").setScrollFactor(0.15);
+    this.add.image(189, 336, "bg5").setScrollFactor(0.30);
     score = 0;
     player = this.physics.add.sprite(75, 550, "ninja1");
     player.setOrigin(0.5);
     player.setGravityX(0);
+    player.setScrollFactor(0);
     player.setScale(0.2);
     player.angle = 90;
     player.setFlipX(true);
@@ -49,8 +58,8 @@ class MainGameScene extends Phaser.Scene {
     wall = this.physics.add.staticGroup();
     // Generate enough walls + extra for smooth looping
     for (let y = 0; y <= SCREEN_HEIGHT + WALL_HEIGHT; y += WALL_HEIGHT) {
-      wall.create(WALL_WIDTH, y, "wall").setOrigin(0, 0).setAngle(90);
-      wall.create(378, y, "wall").setOrigin(0, 0).setAngle(90);
+      wall.create(WALL_WIDTH, y, "wall").setOrigin(0, 0).setAngle(90).setScrollFactor(0);
+      wall.create(378, y, "wall").setOrigin(0, 0).setAngle(90).setScrollFactor(0);
     }
 
     this.anims.create({
@@ -103,14 +112,15 @@ class MainGameScene extends Phaser.Scene {
     }
     function spawnBomb() {
       let side = Phaser.Math.Between(0, 1); // 0 = Left wall, 1 = Right wall
-      let xPos = side === 0 ? 66 : 312; // Near left wall (100) or right wall (980)
+      let xPos = side === 0 ? 70 : 310; // Near left wall (100) or right wall (980)
       let bomb = bombs.create(xPos, -50, "bomb"); // Spawn above screen
       if (side === 1) {
         bomb.setFlipX(true);
       }
-      bomb.setScale(1);
+      bomb.setScale(0.2);
       bomb.setVelocityY(bombSpeed); // Make bomb fall down
       bomb.setGravityY(0); // Apply gravity
+      bomb.setScrollFactor(0);
     }
     function spawnCoin() {
       let xPos = Phaser.Math.Between(66, 312);
@@ -118,6 +128,7 @@ class MainGameScene extends Phaser.Scene {
       coin.setScale(1);
       coin.setVelocityY(200); // Make coin fall down
       coin.setGravityY(0); // Apply gravity
+      coin.setScrollFactor(0);
     }
     function hitBomb(player, bombs) {
       bombs.setVelocityY(0);
@@ -140,7 +151,8 @@ class MainGameScene extends Phaser.Scene {
         });
     
       home.setScale(0.3);
-      this.add.image(190, 320, "board");
+      home.setScrollFactor(0);
+      this.add.image(190, 320, "board").setScrollFactor(0);
       let restartButton = this.add
         .text(110, 300, "RESTART", {
           fontSize: "32px",
@@ -153,13 +165,7 @@ class MainGameScene extends Phaser.Scene {
         .on("pointerdown", () => {
           this.scene.restart();
         });
-      this.add.text(150, 400, score, {
-        fontSize: "32px",
-        fill: "#000",
-        align: 1,
-        fontStyle: "bold",
-        padding: { x: 10, y: 5 },
-      });
+      restartButton.setScrollFactor(0);
       if (score>highscore || highscore === null) {
        localStorage.setItem("highscore", score); 
       } 
@@ -170,13 +176,14 @@ class MainGameScene extends Phaser.Scene {
       console.log(score);
       scoreText.setText(score);
     }
-    this.add.image(280, 30, "board").setScale(0.7);
+    this.add.image(280, 30, "board").setScale(0.7).setScrollFactor(0);
     scoreText = this.add.text(220, 14, "score: 0", {
       fontSize: "32px",
       fill: "#000",
       align: "Right",
     });
     scoreText.setText(score);
+    scoreText.setScrollFactor(0);
     function jump(scene) {
       if (isJumping) return;
       isJumping = true;
@@ -218,6 +225,7 @@ class MainGameScene extends Phaser.Scene {
         wallSprite.y -= SCREEN_HEIGHT + WALL_HEIGHT;
       }
     });
+    this.cameras.main.scrollY -= 1; // Move camera down
   }
 }
 export default MainGameScene;

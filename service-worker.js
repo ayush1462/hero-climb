@@ -20,7 +20,6 @@ self.addEventListener("install", (event) => {
         "/assets/img/7.png",
         "/assets/img/background.png",
         "/assets/img/obs1.png",
-        "/assets/img/wall.png",
         "/assets/img/star.png",
         "/assets/img/home.svg",
         "/assets/img/scoreBoard.png",

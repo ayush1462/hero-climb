@@ -5,7 +5,7 @@ let coins;
 let bombSpeed;
 let score;
 let scoreText;
-let highscore = localStorage.getItem("highscore");
+let highScore = Number(localStorage.getItem("highScore")) || 0;
 let side;
 let isJumping;
 let spawnBombEvent;
@@ -42,7 +42,7 @@ class MainGameScene extends Phaser.Scene {
     this.add.image(189, 336, "bg2").setScrollFactor(0.03);
     this.add.image(189, 336, "bg3").setScrollFactor(0.07);
     this.add.image(189, 336, "bg4").setScrollFactor(0.15);
-    this.add.image(189, 336, "bg5").setScrollFactor(0.30);
+    this.add.image(189, 336, "bg5").setScrollFactor(0.3);
     score = 0;
     player = this.physics.add.sprite(75, 550, "ninja1");
     player.setOrigin(0.5);
@@ -58,8 +58,16 @@ class MainGameScene extends Phaser.Scene {
     wall = this.physics.add.staticGroup();
     // Generate enough walls + extra for smooth looping
     for (let y = 0; y <= SCREEN_HEIGHT + WALL_HEIGHT; y += WALL_HEIGHT) {
-      wall.create(WALL_WIDTH, y, "wall").setOrigin(0, 0).setAngle(90).setScrollFactor(0);
-      wall.create(378, y, "wall").setOrigin(0, 0).setAngle(90).setScrollFactor(0);
+      wall
+        .create(WALL_WIDTH, y, "wall")
+        .setOrigin(0, 0)
+        .setAngle(90)
+        .setScrollFactor(0);
+      wall
+        .create(378, y, "wall")
+        .setOrigin(0, 0)
+        .setAngle(90)
+        .setScrollFactor(0);
     }
 
     this.anims.create({
@@ -131,6 +139,7 @@ class MainGameScene extends Phaser.Scene {
       coin.setScrollFactor(0);
     }
     function hitBomb(player, bombs) {
+      updatehighScore(score);
       bombs.setVelocityY(0);
       coins.setVelocityY(0);
       this.wallMoving = false;
@@ -149,7 +158,7 @@ class MainGameScene extends Phaser.Scene {
         .on("pointerdown", () => {
           this.scene.start("StartGameScene");
         });
-    
+
       home.setScale(0.3);
       home.setScrollFactor(0);
       this.add.image(190, 320, "board").setScrollFactor(0);
@@ -166,9 +175,9 @@ class MainGameScene extends Phaser.Scene {
           this.scene.restart();
         });
       restartButton.setScrollFactor(0);
-      if (score>highscore || highscore === null) {
-       localStorage.setItem("highscore", score); 
-      } 
+      if (score > highScore || highScore === null) {
+        localStorage.setItem("highScore", score);
+      }
     }
     function collectCoin(player, coin) {
       coin.disableBody(true, true);

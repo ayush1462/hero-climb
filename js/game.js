@@ -139,7 +139,6 @@ class MainGameScene extends Phaser.Scene {
       coin.setScrollFactor(0);
     }
     function hitBomb(player, bombs) {
-      updatehighScore(score);
       bombs.setVelocityY(0);
       coins.setVelocityY(0);
       this.wallMoving = false;
@@ -178,6 +177,7 @@ class MainGameScene extends Phaser.Scene {
       if (score > highScore || highScore === null) {
         localStorage.setItem("highScore", score);
       }
+      updatehighScore(score);
     }
     function collectCoin(player, coin) {
       coin.disableBody(true, true);

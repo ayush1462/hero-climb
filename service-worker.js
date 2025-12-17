@@ -9,6 +9,7 @@ self.addEventListener("install", (event) => {
         "/js/game.js",
         "js/index.js",
         "/js/start.js",
+        "/js/firebase.js",
         "/manifest.json",
         "/assets/city/1.png",
         "/assets/city/2.png",
@@ -18,7 +19,7 @@ self.addEventListener("install", (event) => {
         "/assets/city/6.png",
         "/assets/city/10.png",
         "/assets/img/7.png",
-        "/assets/img/background.png",
+        "/assets/img/back.png",
         "/assets/img/home.png",
         "/assets/img/obs1.png",
         "/assets/img/star.png",
@@ -35,6 +36,7 @@ self.addEventListener("install", (event) => {
         "/assets/hero/ninja8.png",
         "/assets/hero/ninja9.png",
         "/assets/img/NINJA1.png",
+        "/assets/fonts/SuperFont.ttf",
       ]);
     })
   );

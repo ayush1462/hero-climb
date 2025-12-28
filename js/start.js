@@ -16,7 +16,7 @@ class StartGameScene extends Phaser.Scene {
     const username = localStorage.getItem("username") || "Player";
     highScore =
       "High Score:" + " " + Number(localStorage.getItem("highScore")) || 0;
-    this.add.image(189, 336, "background");
+    this.add.image(189, 336, "background").setScale(0.35);
     this.add.text(30, 45, username, {
       fontSize: "20px",
       fill: "#000",

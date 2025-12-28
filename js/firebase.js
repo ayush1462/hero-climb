@@ -23,7 +23,7 @@ function generateUsername() {
 // ------------------------------
 // 3. Create User If Needed
 // ------------------------------
-function createUserIfNeeded() {
+export function createUserIfNeeded() {
   let userId = localStorage.getItem("userId");
 
   if (userId) return; // already exists
@@ -55,7 +55,7 @@ function createUserIfNeeded() {
 // ------------------------------
 // 4. Update High Score
 // ------------------------------
-async function updatehighScore(score) {
+export async function updatehighScore(score) {
   const userId = localStorage.getItem("userId");
   if (!userId) return;
   const localHighScore = Number(localStorage.getItem("highScore")) || 0;
@@ -86,4 +86,16 @@ async function updatehighScore(score) {
   } catch (err) {
     console.warn("Firebase sync failed (user offline?):", err);
   }
+}
+export function getTopLeaderboard(limit, callback) {
+  db.collection("players")
+    .orderBy("highScore", "desc")
+    .limit(limit)
+    .get()
+    .then((snapshot) => {
+      const list = [];
+      snapshot.forEach((doc) => list.push(doc.data()));
+      callback(list);
+    })
+    .catch((err) => console.error("Leaderboard error:", err));
 }

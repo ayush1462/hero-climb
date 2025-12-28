@@ -1,3 +1,4 @@
+import { updatehighScore } from "./firebase.js";
 let wall;
 let player;
 let bombs;
@@ -34,6 +35,7 @@ class MainGameScene extends Phaser.Scene {
   }
 
   create() {
+    this.cameras.main.fadeIn(250);
     side = "left";
     bombSpeed = 300;
     this.wallMoving = true;

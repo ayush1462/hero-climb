@@ -47,14 +47,14 @@ self.addEventListener("activate", (event) => {
   event.waitUntil(self.clients.claim());
 });
 self.addEventListener("fetch", (event) => {
-  console.log("[SW] Fetching:", event.request.url);
+  // console.log("[SW] Fetching:", event.request.url);
   event.respondWith(
     caches.match(event.request).then((cachedResponse) => {
       if (cachedResponse) {
-        console.log("[SW] Serving from cache:", event.request.url);
+        // console.log("[SW] Serving from cache:", event.request.url);
         return cachedResponse;
       }
-      console.log("[SW] Fetching from network:", event.request.url);
+      // console.log("[SW] Fetching from network:", event.request.url);
       return fetch(event.request);
     })
   );

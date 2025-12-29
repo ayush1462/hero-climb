@@ -11,7 +11,7 @@ class Leaderboard extends Phaser.Scene {
   }
   create() {
     
-    this.add.image(189, 336, "background");
+    this.add.image(189, 336, "background").setScale(0.4);
     this.add
       .text(190, 40, "TOP RUNNERS", {
         fontSize: "32px",

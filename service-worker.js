@@ -20,6 +20,7 @@ self.addEventListener("install", (event) => {
         "/assets/city/6.png",
         "/assets/city/10.png",
         "/assets/img/7.png",
+        "/assets/img/lb.png",
         "/assets/img/back.png",
         "/assets/img/home.png",
         "/assets/img/obs1.png",

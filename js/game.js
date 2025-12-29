@@ -135,7 +135,7 @@ class MainGameScene extends Phaser.Scene {
     function spawnCoin() {
       let xPos = Phaser.Math.Between(66, 312);
       let coin = coins.create(xPos, -50, "coin"); // Spawn above screen
-      coin.setScale(1);
+      coin.setScale(0.06);
       coin.setVelocityY(200); // Make coin fall down
       coin.setGravityY(0); // Apply gravity
       coin.setScrollFactor(0);

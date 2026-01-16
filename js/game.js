@@ -3,7 +3,7 @@ let wall;
 let player;
 let bombs;
 let coins;
-let bombSpeed;
+let velocity;
 let score;
 let scoreText;
 let highScore = Number(localStorage.getItem("highScore")) || 0;
@@ -12,6 +12,15 @@ let isJumping;
 let spawnBombEvent;
 let spawnCoinEvent;
 let home;
+let jumpSound;
+let coinSound;
+let hitSound;
+let gameSound;
+let billboards = [];
+const LEFT_WALL_X = 75; // player left wall X
+const RIGHT_WALL_X = 305; // player right wall X
+const COIN_OFFSET = 20; // how far from wall coin can appear
+const SAFE_DISTANCE = 50; // min distance from bombs/billboards
 const WALL_WIDTH = 32;
 const WALL_HEIGHT = 32;
 const SCREEN_HEIGHT = 672;
@@ -32,13 +41,22 @@ class MainGameScene extends Phaser.Scene {
     this.load.image("bomb", "assets/img/obs1.png");
     this.load.image("coin", "assets/img/star.png");
     this.load.image("board", "assets/img/scoreBoard.png");
+    this.load.audio("jumpSound", "assets/sounds/game2.mp3");
+    this.load.audio("coinSound", "assets/sounds/collect.mp3");
+    this.load.audio("hitSound", "assets/sounds/fall.mp3");
+    this.load.audio("gameSound", "assets/sounds/jump.mp3");
   }
 
   create() {
     this.cameras.main.fadeIn(250);
     side = "left";
-    bombSpeed = 300;
+    velocity = 300;
     this.wallMoving = true;
+    jumpSound = this.sound.add("jumpSound");
+    coinSound = this.sound.add("coinSound");
+    hitSound = this.sound.add("hitSound");
+    gameSound = this.sound.add("gameSound");
+    gameSound.play();
     // this.add.image(189, 336, "background");
     this.add.image(189, 336, "bg1").setScrollFactor(0);
     this.add.image(189, 336, "bg2").setScrollFactor(0.03);
@@ -112,35 +130,80 @@ class MainGameScene extends Phaser.Scene {
     let incSpeed = this.time.addEvent({
       delay: 10000, // Spawn every 1.5 seconds
       callback: () => {
-        bombSpeed += 50;
+        velocity += 50;
       },
       callbackScope: this,
       loop: true,
     });
-    if (bombSpeed === 700) {
+    if (velocity === 700) {
       incSpeed.remove();
     }
     function spawnBomb() {
-      let side = Phaser.Math.Between(0, 1); // 0 = Left wall, 1 = Right wall
-      let xPos = side === 0 ? 70 : 310; // Near left wall (100) or right wall (980)
-      let bomb = bombs.create(xPos, -50, "bomb"); // Spawn above screen
-      if (side === 1) {
-        bomb.setFlipX(true);
-      }
+      let side = Phaser.Math.Between(0, 1);
+      let xPos = side === 0 ? LEFT_WALL_X : RIGHT_WALL_X;
+
+      let bomb = bombs.create(xPos, -50, "bomb");
+      if (side === 1) bomb.setFlipX(true);
+
       bomb.setScale(0.2);
-      bomb.setVelocityY(bombSpeed); // Make bomb fall down
-      bomb.setGravityY(0); // Apply gravity
+      bomb.setVelocityY(velocity); // use global velocity
+      bomb.setGravityY(0);
       bomb.setScrollFactor(0);
+
+      // Push the actual position and width to the array
+      billboards.push({ x: xPos, y: -50, width: bomb.displayWidth });
     }
-    function spawnCoin() {
-      let xPos = Phaser.Math.Between(66, 312);
-      let coin = coins.create(xPos, -50, "coin"); // Spawn above screen
-      coin.setScale(0.06);
-      coin.setVelocityY(200); // Make coin fall down
-      coin.setGravityY(0); // Apply gravity
-      coin.setScrollFactor(0);
-    }
+
+function spawnCoin() {
+  let safePositions = []; // all X positions that are safe
+  const offset = 5; // how far from wall to spawn
+  const step = 5; // granularity for X checks
+
+  // Generate candidate X positions near walls
+  for (
+    let x = LEFT_WALL_X + offset;
+    x <= LEFT_WALL_X + COIN_OFFSET;
+    x += step
+  ) {
+    safePositions.push(x);
+  }
+  for (
+    let x = RIGHT_WALL_X - COIN_OFFSET;
+    x <= RIGHT_WALL_X - offset;
+    x += step
+  ) {
+    safePositions.push(x);
+  }
+
+  // Filter out positions too close to any **active bombs**
+  let filteredPositions = safePositions.filter((xPos) => {
+    return !bombs.getChildren().some((bomb) => {
+      // Check both X and Y to prevent overlap
+      return Math.abs(xPos - bomb.x) < SAFE_DISTANCE && bomb.y < 50; // only consider bombs near top
+    });
+  });
+
+  // Pick a random safe position
+  if (filteredPositions.length === 0) {
+    // No safe spot, skip this coin spawn
+    return;
+  }
+
+  let xPos = Phaser.Utils.Array.GetRandom(filteredPositions);
+
+  // Spawn the coin
+  let coin = coins.create(xPos, -50, "coin");
+  coin.setScale(0.06);
+  coin.setVelocityY(velocity); // use global velocity
+  coin.setGravityY(0);
+  coin.setScrollFactor(0);
+}
+
+
+
     function hitBomb(player, bombs) {
+      gameSound.stop();
+      hitSound.play();
       bombs.setVelocityY(0);
       coins.setVelocityY(0);
       this.wallMoving = false;
@@ -186,6 +249,7 @@ class MainGameScene extends Phaser.Scene {
       score += 5;
       console.log(score);
       scoreText.setText(score);
+      coinSound.play();
     }
     this.add.image(280, 30, "board").setScale(0.7).setScrollFactor(0);
     scoreText = this.add.text(220, 14, "score: 0", {
@@ -198,6 +262,7 @@ class MainGameScene extends Phaser.Scene {
     function jump(scene) {
       if (isJumping) return;
       isJumping = true;
+      jumpSound.play();
       console.log("player is jumping");
       const endX = side === "left" ? 305 : 75;
       const peakY = player.y - 50;

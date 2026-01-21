@@ -18,7 +18,7 @@ self.addEventListener("install", (event) => {
         "/assets/city/4.png",
         "/assets/city/5.png",
         "/assets/city/6.png",
-        "/assets/city/10.png",
+        "/assets/city/newbg.png",
         "/assets/img/7.png",
         "/assets/img/lb.png",
         "/assets/img/back.png",
@@ -40,6 +40,10 @@ self.addEventListener("install", (event) => {
         "/assets/hero/ninja8.png",
         "/assets/hero/ninja9.png",
         "/assets/img/NINJA1.png",
+        "/assets/sounds/fall.mp3",
+        "/assets/sounds/collect.mp3",
+        "/assets/sounds/game2.mp3",
+        "/assets/sounds/jump.mp3",
         "/assets/fonts/SuperFont.ttf",
       ]);
     })

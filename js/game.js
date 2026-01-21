@@ -237,6 +237,7 @@ function spawnCoin() {
         .setInteractive()
         .on("pointerdown", () => {
           this.scene.restart();
+          hitSound.stop();
         });
       restartButton.setScrollFactor(0);
       if (score > highScore || highScore === null) {
@@ -262,7 +263,6 @@ function spawnCoin() {
     function jump(scene) {
       if (isJumping) return;
       isJumping = true;
-      jumpSound.play();
       console.log("player is jumping");
       const endX = side === "left" ? 305 : 75;
       const peakY = player.y - 50;

@@ -9,8 +9,8 @@
     <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-    <script src="/js/firebase.js"></script>
-    <script src="/phaser.min.js"></script>
+    <script type="module" src="js/firebase.js"></script>
+    <script src="phaser.min.js"></script>
     <style type="text/css">
         @font-face {
             font-family: 'SuperGameFont';
@@ -29,13 +29,7 @@
 </head>
 
 <body>
-    <script type="module" src="/js/index.js"></script>
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
-                .then(() => console.log("Service Worker Registered"));
-        }
-    </script>
+    <script type="module" src="js/index.js"></script>
     
 </body>
 

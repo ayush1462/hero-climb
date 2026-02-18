@@ -14,8 +14,8 @@
   },
   "icons": [
     {
-      "src": "/assets/img/NINJA1.png",
-      "sizes": "500x500",
+      "src": "/assets/img/NINJA2.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },

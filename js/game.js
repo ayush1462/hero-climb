@@ -41,6 +41,7 @@ class MainGameScene extends Phaser.Scene {
     this.load.image("bomb", "assets/img/obs1.png");
     this.load.image("coin", "assets/img/star.png");
     this.load.image("board", "assets/img/scoreBoard.png");
+    this.load.image("h-board", "assets/img/lb_board.png");
     this.load.audio("jumpSound", "assets/sounds/game2.mp3");
     this.load.audio("coinSound", "assets/sounds/collect.mp3");
     this.load.audio("hitSound", "assets/sounds/fall.mp3");
@@ -154,52 +155,50 @@ class MainGameScene extends Phaser.Scene {
       billboards.push({ x: xPos, y: -50, width: bomb.displayWidth });
     }
 
-function spawnCoin() {
-  let safePositions = []; // all X positions that are safe
-  const offset = 5; // how far from wall to spawn
-  const step = 5; // granularity for X checks
+    function spawnCoin() {
+      let safePositions = []; // all X positions that are safe
+      const offset = 5; // how far from wall to spawn
+      const step = 5; // granularity for X checks
 
-  // Generate candidate X positions near walls
-  for (
-    let x = LEFT_WALL_X + offset;
-    x <= LEFT_WALL_X + COIN_OFFSET;
-    x += step
-  ) {
-    safePositions.push(x);
-  }
-  for (
-    let x = RIGHT_WALL_X - COIN_OFFSET;
-    x <= RIGHT_WALL_X - offset;
-    x += step
-  ) {
-    safePositions.push(x);
-  }
+      // Generate candidate X positions near walls
+      for (
+        let x = LEFT_WALL_X + offset;
+        x <= LEFT_WALL_X + COIN_OFFSET;
+        x += step
+      ) {
+        safePositions.push(x);
+      }
+      for (
+        let x = RIGHT_WALL_X - COIN_OFFSET;
+        x <= RIGHT_WALL_X - offset;
+        x += step
+      ) {
+        safePositions.push(x);
+      }
 
-  // Filter out positions too close to any **active bombs**
-  let filteredPositions = safePositions.filter((xPos) => {
-    return !bombs.getChildren().some((bomb) => {
-      // Check both X and Y to prevent overlap
-      return Math.abs(xPos - bomb.x) < SAFE_DISTANCE && bomb.y < 50; // only consider bombs near top
-    });
-  });
+      // Filter out positions too close to any **active bombs**
+      let filteredPositions = safePositions.filter((xPos) => {
+        return !bombs.getChildren().some((bomb) => {
+          // Check both X and Y to prevent overlap
+          return Math.abs(xPos - bomb.x) < SAFE_DISTANCE && bomb.y < 50; // only consider bombs near top
+        });
+      });
 
-  // Pick a random safe position
-  if (filteredPositions.length === 0) {
-    // No safe spot, skip this coin spawn
-    return;
-  }
+      // Pick a random safe position
+      if (filteredPositions.length === 0) {
+        // No safe spot, skip this coin spawn
+        return;
+      }
 
-  let xPos = Phaser.Utils.Array.GetRandom(filteredPositions);
+      let xPos = Phaser.Utils.Array.GetRandom(filteredPositions);
 
-  // Spawn the coin
-  let coin = coins.create(xPos, -50, "coin");
-  coin.setScale(0.06);
-  coin.setVelocityY(velocity); // use global velocity
-  coin.setGravityY(0);
-  coin.setScrollFactor(0);
-}
-
-
+      // Spawn the coin
+      let coin = coins.create(xPos, -50, "coin");
+      coin.setScale(0.06);
+      coin.setVelocityY(velocity); // use global velocity
+      coin.setGravityY(0);
+      coin.setScrollFactor(0);
+    }
 
     function hitBomb(player, bombs) {
       gameSound.stop();
@@ -216,20 +215,21 @@ function spawnCoin() {
       player.setVelocityY(400);
       spawnBombEvent.remove();
       spawnCoinEvent.remove();
+      this.add.image(55, 32, "h-board").setScrollFactor(0).setScale(0.7);
       home = this.add
-        .image(53, 33, "home")
+        .image(54, 32, "home")
         .setInteractive()
         .on("pointerdown", () => {
           this.scene.start("StartGameScene");
         });
 
-      home.setScale(0.3);
+      home.setScale(0.2);
       home.setScrollFactor(0);
-      this.add.image(190, 320, "board").setScrollFactor(0);
+      this.add.image(190, 320, "board").setScrollFactor(0).setScale(0.4);
       let restartButton = this.add
         .text(110, 300, "RESTART", {
           fontSize: "32px",
-          fill: "#000",
+          fill: "#fff",
           align: 1,
           fontStyle: "bold",
           padding: { x: 10, y: 5 },
@@ -252,10 +252,10 @@ function spawnCoin() {
       scoreText.setText(score);
       coinSound.play();
     }
-    this.add.image(280, 30, "board").setScale(0.7).setScrollFactor(0);
+    this.add.image(280, 30, "board").setScale(0.3).setScrollFactor(0);
     scoreText = this.add.text(220, 14, "score: 0", {
       fontSize: "32px",
-      fill: "#000",
+      fill: "#fff",
       align: "Right",
     });
     scoreText.setText(score);

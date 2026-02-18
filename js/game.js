@@ -12,7 +12,6 @@ let isJumping;
 let spawnBombEvent;
 let spawnCoinEvent;
 let home;
-let jumpSound;
 let coinSound;
 let hitSound;
 let gameSound;
@@ -42,10 +41,9 @@ class MainGameScene extends Phaser.Scene {
     this.load.image("coin", "assets/img/star.png");
     this.load.image("board", "assets/img/scoreBoard.png");
     this.load.image("h-board", "assets/img/lb_board.png");
-    this.load.audio("jumpSound", "assets/sounds/game2.mp3");
     this.load.audio("coinSound", "assets/sounds/collect.mp3");
     this.load.audio("hitSound", "assets/sounds/fall.mp3");
-    this.load.audio("gameSound", "assets/sounds/jump.mp3");
+    this.load.audio("gameSound", "assets/sounds/game2.mp3");
   }
 
   create() {
@@ -53,7 +51,6 @@ class MainGameScene extends Phaser.Scene {
     side = "left";
     velocity = 300;
     this.wallMoving = true;
-    jumpSound = this.sound.add("jumpSound");
     coinSound = this.sound.add("coinSound");
     hitSound = this.sound.add("hitSound");
     gameSound = this.sound.add("gameSound");

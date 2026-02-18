@@ -19,15 +19,15 @@ class StartGameScene extends Phaser.Scene {
       "High Score:" + " " + Number(localStorage.getItem("highScore")) || 0;
     this.add.image(189, 336, "background").setScale(0.5);
     this.add.image(330, 70, "lb_board").setScale(0.7);
-    this.add.image(130, 70, "board").setScale(0.4);
-    this.add.text(30, 45, username, {
+    this.add.image(120, 70, "board").setScale(0.4);
+    this.add.text(30, 46, username, {
       fontSize: "18px",
       fill: "#fff",
       align: 1,
       fontStyle: "bold",
       padding: { x: 10, y: 5 },
     });
-    this.add.text(30, 65, highScore, {
+    this.add.text(30, 67, highScore, {
       fontSize: "18px",
       fill: "#fff",
       align: 1,
